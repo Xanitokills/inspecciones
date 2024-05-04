@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings, prefer_const_constructors_in_immutables, prefer_const_constructors
 
 import 'package:appproyecto2/home/Registro_Inspeccion.dart';
+import 'package:appproyecto2/home/nueva_inspeccion.dart';
 import 'package:appproyecto2/models/Inspections_estacion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -38,10 +39,10 @@ class Listar_Estaciones_List extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Registro_Isnpeccion(
+                          builder: (context) => NuevaInspeccion(
                                 /*  id: station.ide_estacion, */
                                 id: station.ide_estacion,
-                                deslocalidad2: station.des_localidad,
+                                desLocalidad: station.des_localidad,
                               )))
                 },
               ));

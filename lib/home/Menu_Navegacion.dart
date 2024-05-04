@@ -29,26 +29,6 @@ class MenuNavegacion extends StatelessWidget {
       pages: [
         const HomePage(),
         Profile(),
-        /* const ReportesPage(), */
-        /*      Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Detalle de Usuario'),
-            TextButton(
-                onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.remove('id');
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
-                },
-                child: Text('Cerrar sesion')),
-          ],
-        ) */
       ],
       items: const [
         ScrollNavigationItem(icon: Icon(Icons.home)),

@@ -55,8 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
     print(url);
     try {
       final response = await http.post(
-        /*   Uri.parse('http://181.176.161.129:8080/app/apiv1/auth/login'), */
-        Uri.parse('http://10.0.2.2:3001/apiv1/auth/login'),
+        Uri.parse('$url/auth/login'),
+        /*     Uri.parse('http://10.0.2.2:3001/apiv1/auth/login'), */
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -166,6 +166,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   )), */
               InkWell(
                 onTap: () async {
+                  Future getIdShared() async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    final String idGuardado = prefs.getString('id') ?? "";
+                    return idGuardado;
+                  }
+
+                  final idu = await getIdShared();
+                  print(idu);
+
                   final password = _passwordController.text;
                   final usuario = _emailController.text;
                   try {

@@ -2,12 +2,12 @@
 
 import 'dart:convert';
 
-import 'package:appproyecto2/models/Inspections.dart';
+import 'package:appproyecto2/models/model_inspections.dart';
 import 'package:flutter/material.dart';
 
 class Detalle_Inspeccion extends StatelessWidget {
   Detalle_Inspeccion({super.key, required this.inspectionElement});
-  final InspectionElement inspectionElement;
+  final Inspecciones inspectionElement;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class Detalle_Inspeccion extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Nombre de Estación: ${inspectionElement.nombreestacion}',
+                'Nombre de Estación: ${inspectionElement.nombreEstacion}',
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -48,11 +48,11 @@ class Detalle_Inspeccion extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildDetailRow(
-                            'TV', inspectionElement.estTxTelevision),
-                        _buildDetailRow(
-                            'Modulador', inspectionElement.estModuladorTv),
-                        _buildDetailRow(
-                            'Radio FM', inspectionElement.estRadioFm),
+                            'TV', inspectionElement.estTxTelevision.toString()),
+                        _buildDetailRow('Modulador',
+                            inspectionElement.estModuladorTv.toString()),
+                        _buildDetailRow('Radio FM',
+                            inspectionElement.estRadioFm.toString()),
                         _buildDetailRow(
                             'Transmisor', inspectionElement.estTransmisorHf),
                         _buildDetailRow(
@@ -82,9 +82,6 @@ class Detalle_Inspeccion extends StatelessWidget {
                   'Latitud', inspectionElement.numLatitud.toString()),
               _buildDetailRow(
                   'Longitud', inspectionElement.numLongitud.toString()),
-              _buildDetailRowImage('Imagen 1', inspectionElement.imgFoto1),
-              _buildDetailRowImage('Imagen 2', inspectionElement.imgFoto2),
-              _buildDetailRowImage('Imagen 3', inspectionElement.imgFoto3),
               const SizedBox(height: 16),
               /*  const Text(
                 'Usuario',

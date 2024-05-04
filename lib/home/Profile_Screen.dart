@@ -260,6 +260,7 @@ class _ProfileState extends State<Profile> {
                             children: <Widget>[
                               InkWell(
                                 onTap: () async {
+                                  print('Cerra');
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   prefs.remove('id');

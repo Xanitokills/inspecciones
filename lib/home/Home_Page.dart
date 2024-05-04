@@ -5,10 +5,12 @@ import 'package:appproyecto2/home/Convenios_mapa.dart';
 import 'package:appproyecto2/home/Registro_Inspeccion.dart';
 import 'package:appproyecto2/home/Listar_Inspecciones.dart';
 import 'package:appproyecto2/home/Listar_Estaciones.dart';
+import 'package:appproyecto2/pages/conexion.dart';
 import 'package:appproyecto2/widgets/search_list2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final String urlToOpenbi =
+      'https://app.powerbi.com/view?r=eyJrIjoiZDA0ZjcxNDgtMmE4MS00YWU3LThjOWYtZmEzMmI0NjYyYTI3IiwidCI6Ijc3NDBjNjM4LTlhNDEtNGUxYi04YjJmLWM4NDIyY2M1YjQ1OCIsImMiOjR9';
   @override
   void initState() {
     super.initState();
@@ -37,14 +41,9 @@ class _HomePageState extends State<HomePage> {
       if (!serviceEnabled) {
         serviceEnabled = await Geolocator.openLocationSettings();
       }
-      if (serviceEnabled) {
-        // El GPS está habilitado, puedes empezar a utilizarlo.
-        // Puedes usar Geolocator.getCurrentPosition() para obtener la posición actual.
-      }
+      if (serviceEnabled) {}
     }
   }
-
-//Coordenadas
 
   get press => null;
   @override
@@ -126,8 +125,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        ListarInspecciones()));
+                                    builder: (context) => ConnectionCheck()));
                             /* ListarInspecciones())); */
                             /*     RegistroIsnpeccion())); */
                           },
@@ -160,7 +158,41 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        /*  Card(
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 4,
+                          child: InkWell(
+                            onTap: () {
+                              _launchURL(urlToOpenbi);
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: Image.asset('assets/reportes1.png'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(30),
+                                  child: const Text(
+                                    'Reporte Estaciones',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      height: 0.8,
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        /*    Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           elevation: 4,
@@ -173,50 +205,13 @@ class _HomePageState extends State<HomePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const Estaciones_Maps()));
+                                              Estaciones_Maps()));
                                   /*      RecursoInsertarMonitoreoProyecto())); */
                                 },
                                 child: SizedBox(
                                   height: 80,
                                   width: 80,
                                   child: Image.asset('assets/gps.png'),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(30),
-                                child: const Text(
-                                  'Lista de Monitoreos',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    height: 0.8,
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ), */
-                        /*    Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          elevation: 4,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              InkWell(
-                                /*  onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => MiPantalla()));
-                                  /*      RecursoInsertarMonitoreoProyecto())); */
-                                }, */
-                                child: SizedBox(
-                                  height: 80,
-                                  width: 80,
-                                  child: Image.asset('assets/consulta4.png'),
                                 ),
                               ),
                               Container(
@@ -279,5 +274,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  _launchURL(String url) async {
+    if (await launchUrl(Uri.parse(url))) {
+    } else {
+      throw 'No se pudo abrir la URL: $url';
+    }
   }
 }

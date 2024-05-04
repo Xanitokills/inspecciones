@@ -1,3 +1,4 @@
+import 'package:appproyecto2/home/nueva_inspeccion.dart';
 import 'package:flutter/material.dart';
 import 'package:appproyecto2/home/Registro_Inspeccion.dart';
 import 'package:appproyecto2/models/Inspections_estacion.dart';
@@ -138,10 +139,10 @@ class BuildStationsReults extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Registro_Isnpeccion(
+                        builder: (context) => NuevaInspeccion(
                               /*  id: station.ide_estacion, */
                               id: station.ide_estacion,
-                              deslocalidad2: station.des_localidad,
+                              desLocalidad: station.des_localidad,
                             )))
               },
             ));

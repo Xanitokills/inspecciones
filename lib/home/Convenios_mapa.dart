@@ -1,37 +1,33 @@
 // ignore_for_file: library_private_types_in_public_api
-import 'dart:convert';
-import 'package:appproyecto2/home/Listar_Estaciones_List.dart';
-import 'package:http/http.dart' as http;
-import 'package:appproyecto2/models/Inspections.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:appproyecto2/models/map_style.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// ignore: depend_on_referenced_packages
 import 'package:geolocator/geolocator.dart';
+import 'dart:typed_data';
 
-//import 'package:mi_pais/TramaProyectos.dart';
+// ignore: depend_on_referenced_packages
+import 'package:location/location.dart' as location;
 
 class Estaciones_Maps extends StatefulWidget {
   const Estaciones_Maps({Key? key}) : super(key: key);
 
   @override
-  _FindFriendsState createState() => _FindFriendsState();
+  _Estaciones_MapsState createState() => _Estaciones_MapsState();
 }
 
-class _FindFriendsState extends State<Estaciones_Maps> {
-  //Coordenadas
-  bool servicestatus = false;
-  bool haspermission = false;
+class _Estaciones_MapsState extends State<Estaciones_Maps> {
+  late bool servicestatus;
+  late bool haspermission;
   late LocationPermission permission;
   late Position position;
   late StreamSubscription<Position> positionStream;
-  String num_longitud = "";
-  String num_latitud = "";
+  late String num_longitud;
+  late String num_latitud;
+
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(0.347596, 32.582520),
     zoom: 14.4746,
@@ -39,8 +35,7 @@ class _FindFriendsState extends State<Estaciones_Maps> {
 
   final Set<Marker> _markers = {};
   late GoogleMapController _controller;
-
-  final List<dynamic> _contacts = [
+  final List<Map<String, dynamic>> _contacts = [
     {
       "name": "Me",
       "position": const LatLng(-12.04318, -77.02824),
@@ -84,16 +79,19 @@ class _FindFriendsState extends State<Estaciones_Maps> {
       "image": 'assets/images/avatar-7.png',
     },
   ];
+
   @override
   void initState() {
-    checkGps();
     super.initState();
+    checkGps();
   }
 
-/*   @override
-  void initState() {
-    super.initState();
-  } */
+  @override
+  void dispose() {
+    positionStream.cancel();
+    super.dispose();
+  }
+
   checkGps() async {
     servicestatus = await Geolocator.isLocationServiceEnabled();
     if (servicestatus) {
@@ -113,53 +111,31 @@ class _FindFriendsState extends State<Estaciones_Maps> {
       }
 
       if (haspermission) {
-        setState(() {
-          //refresh the UI
-        });
-
         getLocation();
       }
     } else {
-      // Geolocator();
       print("El servicio GPS no está habilitado, active la ubicación GPS");
     }
-
-    setState(() {
-      //refresh the UI
-    });
   }
 
   getLocation() async {
     position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    print(position.longitude); //Output: 80.24599079
-    print(position.latitude); //Output: 29.6593457
+      desiredAccuracy: LocationAccuracy.high,
+    );
 
     num_longitud = position.longitude.toString();
     num_latitud = position.latitude.toString();
 
-    setState(() {
-      //refresh UI
-    });
-
     LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high, //accuracy of the location data
-      distanceFilter: 100, //minimum distance (measured in meters) a
-      //device must move horizontally before an update event is generated;
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
     );
 
-    StreamSubscription<Position> positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position position) {
-      print(position.longitude); //Output: 80.24599079
-      print(position.latitude); //Output: 29.6593457
-
+    positionStream = Geolocator.getPositionStream(
+      locationSettings: locationSettings,
+    ).listen((Position position) {
       num_longitud = position.longitude.toString();
       num_latitud = position.latitude.toString();
-
-      setState(() {
-        //refresh UI on update
-      });
     });
   }
 
@@ -168,26 +144,27 @@ class _FindFriendsState extends State<Estaciones_Maps> {
     createMarkers(context);
 
     return Scaffold(
-        body: Stack(
-      children: [
-        GoogleMap(
-          initialCameraPosition: _kGooglePlex,
-          markers: _markers,
-          myLocationButtonEnabled: true,
-          onMapCreated: (GoogleMapController controller) {
-            _controller = controller;
-            controller.setMapStyle(MapStyle().aubergine);
-          },
-        ),
-        Positioned(
-          bottom: 50,
-          left: 20,
-          right: 20,
-          child: Container(
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: _kGooglePlex,
+            markers: _markers,
+            myLocationButtonEnabled: true,
+            onMapCreated: (GoogleMapController controller) {
+              controller.setMapStyle(MapStyle().aubergine);
+            },
+          ),
+          Positioned(
+            bottom: 50,
+            left: 20,
+            right: 20,
+            child: Container(
               width: MediaQuery.of(context).size.width,
               height: 120,
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: _contacts.length,
@@ -195,7 +172,10 @@ class _FindFriendsState extends State<Estaciones_Maps> {
                   return GestureDetector(
                     onTap: () {
                       _controller.moveCamera(
-                          CameraUpdate.newLatLng(_contacts[index]["position"]));
+                        CameraUpdate.newLatLng(
+                          _contacts[index]["position"] as LatLng,
+                        ),
+                      );
                     },
                     child: Container(
                       width: 100,
@@ -205,40 +185,40 @@ class _FindFriendsState extends State<Estaciones_Maps> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset(
-                            _contacts[index]['image'],
+                            _contacts[index]['image'] as String,
                             width: 60,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            _contacts[index]["name"],
+                            _contacts[index]["name"] as String,
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
-                          )
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   );
                 },
-              )),
-        )
-      ],
-    ));
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  createMarkers(BuildContext context) {
-    Marker marker;
-
+  void createMarkers(BuildContext context) async {
     _contacts.forEach((contact) async {
-      marker = Marker(
-        markerId: MarkerId(contact['name']),
-        position: contact['position'],
-        icon: await _getAssetIcon(context, contact['marker'])
-            .then((value) => value),
+      Marker marker = Marker(
+        markerId: MarkerId(contact['name'] as String),
+        position: contact['position'] as LatLng,
+        icon: await _getAssetIcon(context, contact['marker'] as String),
         infoWindow: InfoWindow(
-          title: contact['name'],
+          title: contact['name'] as String,
           snippet: 'Street 6 . 2min ago',
         ),
       );
@@ -250,7 +230,9 @@ class _FindFriendsState extends State<Estaciones_Maps> {
   }
 
   Future<BitmapDescriptor> _getAssetIcon(
-      BuildContext context, String icon) async {
+    BuildContext context,
+    String icon,
+  ) async {
     final Completer<BitmapDescriptor> bitmapIcon =
         Completer<BitmapDescriptor>();
     final ImageConfiguration config =
@@ -259,8 +241,9 @@ class _FindFriendsState extends State<Estaciones_Maps> {
     AssetImage(icon)
         .resolve(config)
         .addListener(ImageStreamListener((ImageInfo image, bool sync) async {
-      final ByteData? bytes =
-          await image.image.toByteData(format: ImageByteFormat.png);
+      final ByteData? bytes = await image.image.toByteData(
+        format: ImageByteFormat.png,
+      );
       final BitmapDescriptor bitmap =
           BitmapDescriptor.fromBytes(bytes!.buffer.asUint8List());
       bitmapIcon.complete(bitmap);
