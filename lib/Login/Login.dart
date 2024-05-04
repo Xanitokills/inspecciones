@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../home/Menu_Navegacion.dart';
+import 'package:connectivity/connectivity.dart';
 // Librerias para alerta
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -21,6 +22,41 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _connectionStatus = 'Unknown';
+
+  void initState() {
+    super.initState();
+    _checkConnection();
+  }
+
+  Future<void> _checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      setState(() {
+        _connectionStatus = 'Mobile data';
+      });
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        _connectionStatus = 'WiFi';
+      });
+    } else {
+      setState(() {
+        _connectionStatus = 'No connection';
+      });
+      _showNoConnectionSnackBar();
+    }
+  }
+
+  void _showNoConnectionSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Color.fromARGB(255, 228, 58, 24),
+        content: Text('No Tienes conexión a internet'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
   final List<String> backgrounds = [
     'assets/lago.png',
     'assets/lago2.png',

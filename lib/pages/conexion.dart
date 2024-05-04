@@ -36,6 +36,7 @@ class _ConnectionCheckState extends State<ConnectionCheck> {
   void _showNoConnectionSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        backgroundColor: Color.fromARGB(255, 228, 58, 24),
         content: Text('No Tienes conexión a internet'),
         duration: Duration(seconds: 3),
       ),

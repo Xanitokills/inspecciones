@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:connectivity/connectivity.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,12 +22,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _connectionStatus = 'Unknown';
   final String urlToOpenbi =
       'https://app.powerbi.com/view?r=eyJrIjoiZDA0ZjcxNDgtMmE4MS00YWU3LThjOWYtZmEzMmI0NjYyYTI3IiwidCI6Ijc3NDBjNjM4LTlhNDEtNGUxYi04YjJmLWM4NDIyY2M1YjQ1OCIsImMiOjR9';
   @override
   void initState() {
     super.initState();
     _activateGPS();
+    _checkConnection();
+  }
+
+  Future<void> _checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      setState(() {
+        _connectionStatus = 'Mobile data';
+      });
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        _connectionStatus = 'WiFi';
+      });
+    } else {
+      setState(() {
+        _connectionStatus = 'No connection';
+      });
+      _showNoConnectionSnackBar();
+    }
+  }
+
+  void _showNoConnectionSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Color.fromARGB(255, 228, 58, 24),
+        content: Text('No Tienes conexión a internet'),
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
 
   Future<void> _activateGPS() async {
@@ -125,7 +156,8 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ConnectionCheck()));
+                                    builder: (context) =>
+                                        ListarInspecciones()));
                             /* ListarInspecciones())); */
                             /*     RegistroIsnpeccion())); */
                           },

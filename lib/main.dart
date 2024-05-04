@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
       /* home: SplashScreen(), */
 
       home: widget.user == '' ? LoginScreen() : MenuNavegacion(),
+
       /*      home: widget.user == '' ? LoginScreen() : MenuNavegacion(), */
       /*  routes: {
           "splash": (context) => SplashScreen(),

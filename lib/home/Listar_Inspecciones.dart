@@ -7,6 +7,7 @@ import 'package:appproyecto2/pages/Detalle_Inspeccion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:connectivity/connectivity.dart';
 
 class ListarInspecciones extends StatefulWidget {
   @override
@@ -14,6 +15,41 @@ class ListarInspecciones extends StatefulWidget {
 }
 
 class _ListarInspeccionesState extends State<ListarInspecciones> {
+  String _connectionStatus = 'Unknown';
+  @override
+  void initState() {
+    super.initState();
+    _checkConnection();
+  }
+
+  Future<void> _checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      setState(() {
+        _connectionStatus = 'Mobile data';
+      });
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        _connectionStatus = 'WiFi';
+      });
+    } else {
+      setState(() {
+        _connectionStatus = 'No connection';
+      });
+      _showNoConnectionSnackBar();
+    }
+  }
+
+  void _showNoConnectionSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Color.fromARGB(255, 228, 58, 24),
+        content: Text('No Tienes conexión a internet'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
   List<dynamic> data = [];
 
 // Funcion asincrona, por eso asjajs, era esooooooooo
