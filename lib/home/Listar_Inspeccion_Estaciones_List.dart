@@ -3,36 +3,37 @@
 import 'package:appproyecto2/home/Registro_Inspeccion.dart';
 import 'package:appproyecto2/home/nueva_inspeccion.dart';
 import 'package:appproyecto2/models/Inspections_estacion.dart';
+import 'package:appproyecto2/models/Inspections_inspeccion_%20estacion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class Listar_Estaciones_List extends StatelessWidget {
-  Listar_Estaciones_List({super.key, required this.stations});
-  final List<Datum> stations;
+class Listar_Inspeccion_Estaciones_List extends StatelessWidget {
+  Listar_Inspeccion_Estaciones_List({super.key, required this.stations2});
+  final List<Datum3> stations2;
   final String idsstacionseleccionado = '';
 
   @override
   Widget build(BuildContext context) {
-    print(stations);
+    print(stations2);
     return Container(
       width: double.infinity,
       height: double.infinity,
       child: ListView.builder(
-        itemCount: stations.length,
+        itemCount: stations2.length,
         itemBuilder: (BuildContext context, int index) {
-          final station = stations[index];
+          final station2 = stations2[index];
           return Card(
               elevation: 5,
               margin: EdgeInsets.all(8),
               child: ListTile(
                 title: Text(
-                    station.des_localidad.toString() +
+                    station2.nombre_estacion.toString() +
                         " " +
-                        station.cod_ubigeo.toString(),
+                        station2.ide_estacion.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 leading: Icon(Icons.house_siding_rounded),
-                subtitle: Text(station.esta_estacion,
+                subtitle: Text(station2.esta_estacion,
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded),
                 onTap: () => {
@@ -41,8 +42,8 @@ class Listar_Estaciones_List extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => NuevaInspeccion(
                                 /*  id: station.ide_estacion, */
-                                id: station.ide_estacion,
-                                desLocalidad: station.des_localidad,
+                                id: station2.ide_estacion,
+                                desLocalidad: station2.esta_estacion,
                               )))
                 },
               ));

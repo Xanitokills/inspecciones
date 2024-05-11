@@ -2,11 +2,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:appproyecto2/home/Convenios_mapa.dart';
+import 'package:appproyecto2/home/Listar_Estaciones2.dart';
+import 'package:appproyecto2/home/Listar_Inspecciones_Estacion.dart';
 import 'package:appproyecto2/home/Registro_Inspeccion.dart';
 import 'package:appproyecto2/home/Listar_Inspecciones.dart';
 import 'package:appproyecto2/home/Listar_Estaciones.dart';
 import 'package:appproyecto2/pages/conexion.dart';
-import 'package:appproyecto2/widgets/search_list2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   padding: const EdgeInsets.all(30),
                                   child: const Text(
-                                    'Nueva Inspección',
+                                    '1. Nueva Inspección',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       height: 0.8,
@@ -176,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   padding: const EdgeInsets.all(30),
                                   child: const Text(
-                                    'Lista de Inspecciones',
+                                    '2. Ver Mis Inspecciones',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -184,6 +185,43 @@ class _HomePageState extends State<HomePage> {
                                       color: Colors.black,
                                       fontSize: 14,
                                     ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ListarEstaciones2()));
+                            /*     RegistroIsnpeccion())); */
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            elevation: 4,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: Image.asset('assets/antenna.png'),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(30),
+                                  child: const Text(
+                                    '3. Reporte de Estaciones',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      height: 0.8,
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ],
@@ -210,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   padding: const EdgeInsets.all(30),
                                   child: const Text(
-                                    'Reporte Estaciones',
+                                    '4. Reporte BI de Estaciones',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -224,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        /*    Card(
+                        /*  Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           elevation: 4,

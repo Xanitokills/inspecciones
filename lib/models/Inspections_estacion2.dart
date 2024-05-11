@@ -4,25 +4,25 @@
 
 import 'dart:convert';
 
-Stations stationsFromJson(String str) => Stations.fromJson(json.decode(str));
+Stations2 stationsFromJson2(String str) => Stations2.fromJson(json.decode(str));
 
-String stationsToJson(Stations data) => json.encode(data.toJson());
+String stationsToJson2(Stations2 data) => json.encode(data.toJson());
 
-class Stations {
+class Stations2 {
   bool status;
   String message;
-  List<Datum> data;
+  List<Datum2> data;
 
-  Stations({
+  Stations2({
     required this.status,
     required this.message,
     required this.data,
   });
 
-  factory Stations.fromJson(Map<String, dynamic> json) => Stations(
+  factory Stations2.fromJson(Map<String, dynamic> json) => Stations2(
         status: json["status"],
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<Datum2>.from(json["data"].map((x) => Datum2.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,10 +32,9 @@ class Stations {
       };
 }
 
-class Datum {
+class Datum2 {
   String ide_estacion;
-  String cod_ubigeo;
-  String des_localidad;
+  String nombre_estacion;
   String est_estacion;
   String esta_estacion;
 /*   String tip_estacion;
@@ -50,10 +49,9 @@ class Datum {
   String des_recomendacion;
   String des_conclusiones; */
 
-  Datum({
+  Datum2({
     required this.ide_estacion,
-    required this.cod_ubigeo,
-    required this.des_localidad,
+    required this.nombre_estacion,
     required this.est_estacion,
     required this.esta_estacion,
 /*      required this.tip_estacion,
@@ -69,10 +67,9 @@ class Datum {
     required this.des_conclusiones, */
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Datum2.fromJson(Map<String, dynamic> json) => Datum2(
         ide_estacion: json["IDE_ESTACION"],
-        cod_ubigeo: json["COD_UBIGEO"],
-        des_localidad: json["DES_LOCALIDAD"],
+        nombre_estacion: json["NOMBRE_ESTACION"],
         est_estacion: json["EST_ESTACION"],
         esta_estacion: json["ESTA_ESTACION"],
         /*   tip_estacion: json["TIP_ESTACION"],
@@ -90,8 +87,7 @@ class Datum {
 
   Map<String, dynamic> toJson() => {
         "IDE_ESTACION": ide_estacion,
-        "COD_UBIGEO": cod_ubigeo,
-        "DES_LOCALIDAD": des_localidad,
+        "NOMBRE_ESTACION": nombre_estacion,
         "EST_ESTACION": est_estacion,
         "ESTA_ESTACION": esta_estacion,
         /*    "TIP_ESTACION": tip_estacion, */

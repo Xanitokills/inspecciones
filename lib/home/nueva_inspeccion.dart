@@ -184,15 +184,29 @@ class _NuevaInspeccionState extends State<NuevaInspeccion> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          /*   title: const Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: 20.0), // Ajusta el valor según sea necesario
+            child: Text(
+              'Título con margen',
+              style: TextStyle(
+                fontSize:
+                    20.0, // Ajusta el tamaño del texto según sea necesario
+              ),
+              
+            ),
+          ), */
           centerTitle: true,
+
           title: Text(
             'INSPECCIÓN TÉCNICA \n${widget.desLocalidad}',
           ),
+          toolbarHeight: 80.0, // Ajusta el valor según sea necesario
         ),
         body: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
                   Container(
@@ -223,266 +237,261 @@ class _NuevaInspeccionState extends State<NuevaInspeccion> {
                         style: const TextStyle(fontSize: 14)),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   // Son todos los widgets de los dorpdown
-                  ListView(
+                  /*  ListView(
                     shrinkWrap: true,
-                    children: [
-                      Container(
-                          height: 200,
-                          child: ListView(
-                            shrinkWrap: false,
-                            children: listValuesDropDown
-                                .map(
-                                  (e) => Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        e['label'].toString(),
-                                      ),
-                                      //MyDropDowButton()
-                                      DropdownButton(
-                                        items: dropDownOptions,
-                                        value: e['value'],
-                                        hint: const Text("Seleccione"),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            e['value'] = value;
-                                          });
-                                        },
-                                      ),
-                                    ],
+                    children: [ */
+                  Container(
+                      height: 380,
+                      child: ListView(
+                        shrinkWrap: false,
+                        children: listValuesDropDown
+                            .map(
+                              (e) => Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    e['label'].toString(),
                                   ),
-                                )
-                                .toList(),
-                          )),
-                      Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Por favor ingrese un valor';
-                                  }
-                                  return null;
-                                },
-                                controller: textEditingController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Recomendaciones',
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    des_recomendacion = value;
-                                  });
-                                },
+                                  //MyDropDowButton()
+                                  DropdownButton(
+                                    items: dropDownOptions,
+                                    value: e['value'],
+                                    hint: const Text("Seleccione"),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        e['value'] = value;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Por favor ingrese un valor';
-                                  }
-                                  return null;
-                                },
-                                controller: textEditingController2,
-                                decoration: const InputDecoration(
-                                  labelText: 'Conclusiones',
-                                ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    des_conclusiones = value;
-                                  });
-                                },
-                              ),
-                            ],
-                          )),
-                      Container(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 250,
-                        width: double.infinity,
-                        child: ListView(
-                          children: listValueImages
-                              .map(
-                                (e) => ImageIndex(
-                                  index: e['label'],
-                                  image: e['value'],
-                                  camera: () async {
-                                    try {
-                                      final picker = ImagePicker();
-                                      final pickerFile = await picker.pickImage(
-                                          source: ImageSource.camera);
-
-                                      if (pickerFile != null) {
-                                        final imageBytes =
-                                            await pickerFile.readAsBytes();
-                                        setState(() {
-                                          e['value'] = base64Encode(imageBytes);
-                                        });
-                                      } else {
-                                        // No hacer nada si el usuario presiona el botón de atrás
-                                        return;
-                                      }
-                                    } catch (e) {
-                                      print('Error al cargar la imagen: $e');
-                                    }
-                                  },
-                                  upload: () async {
-                                    try {
-                                      final picker = ImagePicker();
-                                      final pickerFile = await picker.pickImage(
-                                          source: ImageSource.gallery);
-
-                                      if (pickerFile != null) {
-                                        final imageBytes =
-                                            await pickerFile.readAsBytes();
-
-                                        setState(() {
-                                          e['value'] = base64Encode(imageBytes);
-                                        });
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            backgroundColor:
-                                                Color.fromARGB(255, 84, 18, 4),
-                                            content: Text(
-                                                'No se seleccionó ninguna imagen'),
-                                            duration: Duration(
-                                                seconds:
-                                                    3), // Opcional: Configura la duración del SnackBar
-                                          ),
-                                        );
-                                        return;
-                                      }
-                                    } catch (e) {
-                                      //show snackbar error
-                                    }
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 42, 155, 11),
-                        ),
-                        child: const Text(
-                          'Guardar',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                        onPressed: () async {
-                          if (!_formKey.currentState!.validate()) {
-                            return;
-                          }
-
-                          bool foundEmptyValue = false;
-
-                          listValuesDropDown.forEach((e) {
-                            if (e['value'] == '') {
+                            )
+                            .toList(),
+                      )),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Por favor ingrese un valor';
+                              }
+                              return null;
+                            },
+                            controller: textEditingController,
+                            decoration: const InputDecoration(
+                              labelText: 'Recomendaciones',
+                            ),
+                            onChanged: (value) {
                               setState(() {
-                                foundEmptyValue = true;
+                                des_recomendacion = value;
                               });
-                            }
-                          });
-                          if (foundEmptyValue) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor:
-                                    Color.fromARGB(255, 162, 37, 12),
-                                content: Text(
-                                    'Debe seleccionar un valor para cada campo'),
-                                duration: Duration(
-                                    seconds:
-                                        3), // Opcional: Configura la duración del SnackBar
-                              ),
-                            );
-                            return;
-                          }
-
-                          //Validar que almenos haya 6 images cargadas
-                          int countImages = 0;
-                          listValueImages.forEach((e) {
-                            if (e['value'] != '') {
+                            },
+                          ),
+                          TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Por favor ingrese un valor';
+                              }
+                              return null;
+                            },
+                            controller: textEditingController2,
+                            decoration: const InputDecoration(
+                              labelText: 'Conclusiones',
+                            ),
+                            onChanged: (value) {
                               setState(() {
-                                countImages++;
+                                des_conclusiones = value;
                               });
-                            }
-                          });
-
-                          if (countImages < 6) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: Color.fromARGB(255, 84, 18, 4),
-                                content:
-                                    Text('Debe cargar al menos 6 imágenes'),
-                                duration: Duration(
-                                    seconds:
-                                        3), // Opcional: Configura la duración del SnackBar
-                              ),
-                            );
-                            setState(() {
-                              countImages = 0;
-                            });
-                            return;
-                          }
-
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          final iduser = prefs.getString('id');
-                          final res = await _guardarDatos(
-                            ide_estacion,
-                            nombre_estacion,
-                            num_longitud,
-                            num_latitud,
-                            fec_inspeccion,
-                            des_recomendacion,
-                            des_conclusiones,
-                            listValuesDropDown,
-                            listValueImages,
-                            iduser,
-                          );
-
-                          if (res == true) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor:
-                                    Color.fromARGB(255, 26, 108, 3),
-
-                                content: Text(' Registro Exitoso'),
-                                duration: Duration(
-                                    seconds:
-                                        3), // Opcional: Configura la duración del SnackBar
-                              ),
-                            );
-                            clearInputs();
-                            Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ListarEstaciones()),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: Color.fromARGB(255, 84, 18, 4),
-
-                                content: Text('Error de Registro'),
-                                duration: Duration(
-                                    seconds:
-                                        3), // Opcional: Configura la duración del SnackBar
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                            },
+                          ),
+                        ],
+                      )),
+                  Container(
+                    height: 20,
                   ),
+                  Container(
+                    height: 400,
+                    width: double.infinity,
+                    child: ListView(
+                      children: listValueImages
+                          .map(
+                            (e) => ImageIndex(
+                              index: e['label'],
+                              image: e['value'],
+                              camera: () async {
+                                try {
+                                  final picker = ImagePicker();
+                                  final pickerFile = await picker.pickImage(
+                                      source: ImageSource.camera);
+
+                                  if (pickerFile != null) {
+                                    final imageBytes =
+                                        await pickerFile.readAsBytes();
+                                    setState(() {
+                                      e['value'] = base64Encode(imageBytes);
+                                    });
+                                  } else {
+                                    // No hacer nada si el usuario presiona el botón de atrás
+                                    return;
+                                  }
+                                } catch (e) {
+                                  print('Error al cargar la imagen: $e');
+                                }
+                              },
+                              upload: () async {
+                                try {
+                                  final picker = ImagePicker();
+                                  final pickerFile = await picker.pickImage(
+                                      source: ImageSource.gallery);
+
+                                  if (pickerFile != null) {
+                                    final imageBytes =
+                                        await pickerFile.readAsBytes();
+
+                                    setState(() {
+                                      e['value'] = base64Encode(imageBytes);
+                                    });
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 84, 18, 4),
+                                        content: Text(
+                                            'No se seleccionó ninguna imagen'),
+                                        duration: Duration(
+                                            seconds:
+                                                3), // Opcional: Configura la duración del SnackBar
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                } catch (e) {
+                                  //show snackbar error
+                                }
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color.fromARGB(255, 42, 155, 11),
+                    ),
+                    child: const Text(
+                      'Guardar',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () async {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+
+                      bool foundEmptyValue = false;
+
+                      listValuesDropDown.forEach((e) {
+                        if (e['value'] == '') {
+                          setState(() {
+                            foundEmptyValue = true;
+                          });
+                        }
+                      });
+                      if (foundEmptyValue) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 162, 37, 12),
+                            content: Text(
+                                'Debe seleccionar un valor para cada campo'),
+                            duration: Duration(
+                                seconds:
+                                    3), // Opcional: Configura la duración del SnackBar
+                          ),
+                        );
+                        return;
+                      }
+
+                      //Validar que almenos haya 6 images cargadas
+                      int countImages = 0;
+                      listValueImages.forEach((e) {
+                        if (e['value'] != '') {
+                          setState(() {
+                            countImages++;
+                          });
+                        }
+                      });
+
+                      if (countImages < 6) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 84, 18, 4),
+                            content: Text('Debe cargar al menos 6 imágenes'),
+                            duration: Duration(
+                                seconds:
+                                    3), // Opcional: Configura la duración del SnackBar
+                          ),
+                        );
+                        setState(() {
+                          countImages = 0;
+                        });
+                        return;
+                      }
+
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      final iduser = prefs.getString('id');
+                      final res = await _guardarDatos(
+                        ide_estacion,
+                        nombre_estacion,
+                        num_longitud,
+                        num_latitud,
+                        fec_inspeccion,
+                        des_recomendacion,
+                        des_conclusiones,
+                        listValuesDropDown,
+                        listValueImages,
+                        iduser,
+                      );
+
+                      if (res == true) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 26, 108, 3),
+
+                            content: Text(' Registro Exitoso'),
+                            duration: Duration(
+                                seconds:
+                                    3), // Opcional: Configura la duración del SnackBar
+                          ),
+                        );
+                        clearInputs();
+                        Navigator.pop(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListarEstaciones()),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 84, 18, 4),
+
+                            content: Text('Error de Registro'),
+                            duration: Duration(
+                                seconds:
+                                    3), // Opcional: Configura la duración del SnackBar
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  /*    ],
+                  ), */
                 ],
               ),
             ),

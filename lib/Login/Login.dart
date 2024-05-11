@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
               Container(
-                height: 450,
+                height: 500,
                 // ignore: prefer_const_constructors
                 decoration: BoxDecoration(
                   borderRadius:
@@ -283,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              Center(
+              /*  Center(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -296,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ) */
-                  Container(
+                  /*   Container(
                     margin: const EdgeInsets.only(top: 20),
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
@@ -336,7 +336,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                     ),
-                  ),
+                  ), */
                   /*   Text(
                     'Don\'t have an account?',
                     style: TextStyle(
@@ -355,7 +355,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ), */
                 ],
-              )),
+              )), */
             ],
           ),
         ),
