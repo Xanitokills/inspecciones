@@ -1,16 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:appproyecto2/constants/inspections.dart';
 import 'package:appproyecto2/constants/urls.dart';
 import 'package:appproyecto2/home/Listar_Estaciones.dart';
 import 'package:appproyecto2/widgets/Index_imagen.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:geolocator/geolocator.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class NuevaInspeccion extends StatefulWidget {
   const NuevaInspeccion(
@@ -22,6 +25,8 @@ class NuevaInspeccion extends StatefulWidget {
 }
 
 class _NuevaInspeccionState extends State<NuevaInspeccion> {
+  File? _imageFile;
+  File? _compressedFile;
   bool isLoading = false;
   bool servicestatus = false;
   bool haspermission = false;
@@ -29,7 +34,7 @@ class _NuevaInspeccionState extends State<NuevaInspeccion> {
   late Position position;
 
   late StreamSubscription<Position> positionStream;
-  DateTime now = new DateTime.now();
+  DateTime now = DateTime.now();
 
   TextEditingController textEditingController = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
@@ -88,6 +93,28 @@ class _NuevaInspeccionState extends State<NuevaInspeccion> {
     listValueImages.forEach((element) {
       element['value'] = '';
     });
+  }
+
+  Future<void> compress() async {
+    try {
+      var result = await FlutterImageCompress.compressAndGetFile(
+        _imageFile!.absolute.path,
+        _imageFile!.path + 'compressed.jpg',
+        quality: 66,
+      );
+
+      // Convierte XFile a File utilizando el constructor File() de path_provider
+      _compressedFile = result != null ? File(result.path) : null;
+
+      setState(() {
+        // Actualiza el estado con el archivo comprimido
+        _compressedFile = _compressedFile;
+      });
+    } catch (e) {
+      // Manejo de errores
+      print("Error durante la compresión: $e");
+      // Podrías mostrar un mensaje de error al usuario o realizar otra acción apropiada aquí
+    }
   }
 
   getLocation() async {
@@ -417,7 +444,7 @@ class _NuevaInspeccionState extends State<NuevaInspeccion> {
                         return;
                       }
 
-                      //Validar que almenos haya 6 images cargadas
+                      //Validar que almenos haya 6 imageness cargadas
                       int countImages = 0;
                       listValueImages.forEach((e) {
                         if (e['value'] != '') {
@@ -490,6 +517,7 @@ class _NuevaInspeccionState extends State<NuevaInspeccion> {
                       }
                     },
                   ),
+
                   /*    ],
                   ), */
                 ],

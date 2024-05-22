@@ -7,7 +7,9 @@ import 'package:appproyecto2/home/Listar_Inspecciones_Estacion.dart';
 import 'package:appproyecto2/home/Registro_Inspeccion.dart';
 import 'package:appproyecto2/home/Listar_Inspecciones.dart';
 import 'package:appproyecto2/home/Listar_Estaciones.dart';
+import 'package:appproyecto2/home/comprres.dart';
 import 'package:appproyecto2/pages/conexion.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -196,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ListarEstaciones2()));
+                                    builder: (context) => Compress()));
                             /*     RegistroIsnpeccion())); */
                           },
                           child: Card(
@@ -214,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                 Container(
                                   padding: const EdgeInsets.all(30),
                                   child: const Text(
-                                    '3. Reporte de Estaciones',
+                                    '3. Inspecciones por Estación',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       height: 0.8,

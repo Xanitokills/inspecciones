@@ -106,9 +106,16 @@ class _ListarInspeccionesState extends State<ListarInspecciones> {
                             'Estación : ${elemento.nombreEstacion.toString()}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          leading: CircleAvatar(
-                              child: Text(elemento.ideInspeccion.toString())),
-                          /*    leading: Icon(Icons.web), */
+                          leading: Icon(
+                            Icons.history,
+                            color: Color.fromARGB(255, 6, 67, 133),
+                          ),
+
+                          /*      leading: Icon(Icons.house_siding_rounded), */
+                          /*         leading: CircleAvatar(
+                              child: Text(elemento.ideInspeccion.toString())), */
+
+                          /*  child:   leading: Icon(Icons.web),  */
                           subtitle: Text(
                               'Fecha: ${elemento.fecInspeccion.year}-${elemento.fecInspeccion.month}-${elemento.fecInspeccion.day}'),
                           onTap: () {

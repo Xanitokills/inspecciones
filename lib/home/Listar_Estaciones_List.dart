@@ -31,7 +31,10 @@ class Listar_Estaciones_List extends StatelessWidget {
                         " " +
                         station.cod_ubigeo.toString(),
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                leading: Icon(Icons.house_siding_rounded),
+                leading: Icon(
+                  Icons.cell_tower,
+                  color: Color.fromARGB(255, 6, 67, 133),
+                ),
                 subtitle: Text(station.esta_estacion,
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded),

@@ -7,5 +7,5 @@ const String UrlApiLocal = 'http://10.0.2.2:3001/apiv1';
 /* const String UrlApiLocal = 'https://ch2923f7-3001.brs.devtunnels.ms/apiv1'; */
 
 //este de aca
-const bool isLocal = false;
+const bool isLocal = true;
 // /project/getByUser
